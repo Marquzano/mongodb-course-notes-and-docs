@@ -102,3 +102,24 @@ If you wanted to replace a piece of info with a whole new set of data then it wo
 db.flightData.replaceOne({_id: ObjectId("afafafafafafaf")}, {INSERT DATA HERE AS JSON})
 
 ## Understanding find() and the Cursor Object
+When we use find() we get back a cursor object.
+
+In our examples so far using find() always returned the array of documents in the collection, but this is not so.
+
+This is why when we use find() on our passengers collection we cannot see the last entry from that JSON object ("name": "Gordon Black").
+
+This is why MongoDB gives you an option "it", this is not shell specific.
+
+find() does not give us an array of objects within a collection, it instead gives a Cursor Object which gives us a ton of metadata that can then be cycled to view the results. This is what it does.
+
+Using find() alone will give you the first 20 documents in the collection.
+
+after find() we can add on another method toArray() which will exhaust the collection and give us all the documents within the collection as an array.
+
+This is obviously not optimal if the collection holds several thousands of documents.
+
+In application code you may use the following:
+db.passengers.find().forEach()
+forEach() simply allows you to write some code to do something to every element that is in your database.
+
+The Cursor Object is exactly the reason why pretty() does not work with findOne(). findOne() only returns one document and pretty() can only be called to work on a Cursor Object and not a singular document.
