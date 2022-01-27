@@ -81,3 +81,22 @@ We could also use this operator with findOne.
 flights> db.flightData.findOne({distance: {$gt: 900}})
 
 In this case both flights are greater than 900 in distance but findOne will return the first that it finds in the array that passes through the filter
+
+## update() VS updateMany()
+update() and updateMany() and updateOne() will update all matching elements so what's the difference?
+
+The difference can be noticed if you remove $set from update.
+
+db.flightData.update({_id: ObjectId("afafafafafaf")}, {delayed: false})
+
+With updateOne() and updateMany() this will not work becuase they require the $set operator, but with update() this will work.
+
+The issue here is that the update() without $set will overwrite the over key values pairs and leave you with the document of data that you updated it with.
+
+Note: This doesn't seem to be the case for MongoDB 5.0.5 Mongosh 1.1.9 and update still requires the $set operator.
+
+It is recommended that we use updateOne() and updateMany() for most modifications.
+
+If you wanted to replace a piece of info with a whole new set of data then it would be best to use the replaceOne() method.
+
+db.flightData.replaceOne({_id: ObjectId("afafafafafafaf")}, {INSERT DATA HERE AS JSON})
