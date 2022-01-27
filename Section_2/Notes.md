@@ -41,3 +41,43 @@ Delete: deleteOne(filter, options), deleteMany(filter, options)
 
 Example 1: Flight Data
 In a flight data collection like in 01-flights.json, we may want to be able to schedule a flight (create), see our flight information (read), update our info if necessary (update), and delete our flight if need be (delete)
+
+## Finding, Inserting, Deleting, and Updating Elements
+
+To clear a database we have to use a delete command.
+
+All commands are always executed on a collection where you want to add or delete documents
+
+When updating you may do the following:
+db.flightData.updateOne({distance: 12000}, {marker: 'delete'})
+
+But this will cause an error because in order to update a document it must contain an atomic operator.
+
+You don't pass in a document describing your change like this because MongoDB does not know how to interpret this.
+
+Instead you pass in a document with a special keyword $set.
+
+db.flightData.updateOne({distance: 12000}, {$set: {marker: 'delete'}})
+
+$ in MongoDB means that the word is a reserved operator/word
+
+$set is identified by MongoDB when used in an updateOne operation to describe the changes you want to make. The value of $set is a document. This tells MongoDB for the document that you are finding, please set the key and its value. If the key already exists then the value will simply be updated. If the key doesn't exist then it will simply be added along with its value.
+
+As a filter you can simply pass in an empty document, this will select ALL documents.
+
+## Diving Deeper into Finding Data
+You can filter the data you want to find by providing a key
+
+db.flightData.find({intercontinental: true})
+
+You can also find what you want by providing some logic
+
+db.flightData.find({distance: {$gt: 10000}})
+
+This $gt operator represents greater than, this tells MongoDb that you are looking for data that has a distanc greater than 10000.
+
+We could also use this operator with findOne.
+
+flights> db.flightData.findOne({distance: {$gt: 900}})
+
+In this case both flights are greater than 900 in distance but findOne will return the first that it finds in the array that passes through the filter
