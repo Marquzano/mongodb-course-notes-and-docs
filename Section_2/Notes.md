@@ -100,3 +100,5 @@ It is recommended that we use updateOne() and updateMany() for most modification
 If you wanted to replace a piece of info with a whole new set of data then it would be best to use the replaceOne() method.
 
 db.flightData.replaceOne({_id: ObjectId("afafafafafafaf")}, {INSERT DATA HERE AS JSON})
+
+## Understanding find() and the Cursor Object
